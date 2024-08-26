@@ -5,7 +5,13 @@ const { Server } = require('socket.io');
 //WORKING CHAT SOCKETS
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+//const io = new Server(server);
+
+
+//This feature will temporarily store all the events that are sent by the server and will try to restore the state of a client when it reconnects:
+const io = new Server(server, {
+    connectionStateRecovery: {}
+});
 
 app.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
@@ -52,6 +58,8 @@ io.on('connection', (socket) => {
         io.emit('chat message', msg);
     });
 });
+
+
 server.listen(3000, () => {
     console.log('server running at http://localhost:3000');
 });
