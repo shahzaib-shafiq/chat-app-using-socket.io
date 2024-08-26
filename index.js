@@ -28,6 +28,30 @@ io.on('connection', (socket) => {
     });
 });
 
+
+//In order to send an event to everyone, Socket.IO gives us the io.emit() method.
+// io.emit('hello', 'world');
+
+
+//If you want to send a message to everyone except for a certain emitting socket, we have the broadcast flag for emitting from that socket:
+io.on('connection', (socket) => {
+    socket.broadcast.emit('hi');
+});
+
+// io.on('connection', (socket) => {
+//     socket.on('chat message', (msg) => {
+//         io.emit('chat message', msg);
+//     });
+// });
+
+
+// In this case, for the sake of simplicity we’ll send the message to everyone, including the sender
+
+io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
+});
 server.listen(3000, () => {
     console.log('server running at http://localhost:3000');
 });
