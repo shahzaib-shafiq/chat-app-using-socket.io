@@ -25,8 +25,12 @@
     </form>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 <script>
-  const socket = io();
-
+     const socket = io({
+    auth: {
+      serverOffset: 0
+    }
+  });
+  
   const form = document.getElementById('form');
   const input = document.getElementById('input');
   const messages = document.getElementById('messages');
@@ -39,13 +43,21 @@
     }
   });
 
-  socket.on('chat message', (msg) => {
+//   socket.on('chat message', (msg) => {
+//     const item = document.createElement('li');
+//     item.textContent = msg;
+//     messages.appendChild(item);
+//     window.scrollTo(0, document.body.scrollHeight);
+//   });
+
+  socket.on('chat message', (msg, serverOffset) => {
     const item = document.createElement('li');
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+    socket.auth.serverOffset = serverOffset;
   });
-  
+
 </script>
 
 </body>
